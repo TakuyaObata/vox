@@ -1,0 +1,278 @@
+import React from "react";
+import { Mail, Lock, Database, Search, Sparkles, ShieldCheck, ArrowRight, AudioLines, Image as ImageIcon } from "lucide-react";
+import { motion } from "framer-motion";
+
+// Jade (翡翠) theme palette
+const jade = {
+  50: "#E6F5EF",
+  100: "#C9ECDF",
+  200: "#94DCC1",
+  300: "#5FCBA3",
+  400: "#2AB985",
+  500: "#00A86B", // core jade
+  600: "#04925E",
+  700: "#0A7C51",
+  800: "#0E6644",
+  900: "#115238",
+};
+
+// Simple container
+const Container: React.FC<{ className?: string; children: React.ReactNode }> = ({ className = "", children }) => (
+  <div className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>
+);
+
+// CTA Button
+const CTA: React.FC<{ as?: "a" | "button"; href?: string; variant?: "primary" | "ghost"; children: React.ReactNode } & React.ComponentPropsWithoutRef<any>> = ({ as = "a", href = "#", variant = "primary", children, ...rest }) => {
+  const base = "inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-base font-semibold transition-transform active:scale-[.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
+  const styles = variant === "primary"
+    ? `text-white shadow-md shadow-[${jade[600]}]/30`
+    : `text-[${jade[800]}] bg-white/60 backdrop-blur border border-white/50 hover:bg-white`;
+  const Comp: any = as;
+  return (
+    <Comp
+      href={href}
+      className={`${base} ${styles}`}
+      style={{ background: variant === "primary" ? `linear-gradient(135deg, ${jade[500]}, ${jade[600]})` : undefined }}
+      {...rest}
+    >
+      {children}
+    </Comp>
+  );
+};
+
+const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
+  <div
+    className={`rounded-2xl border border-white/20 bg-white/70 backdrop-blur p-6 shadow-sm hover:shadow-md transition-shadow ${className}`}
+  >
+    {children}
+  </div>
+);
+
+const SectionTitle: React.FC<{ eyebrow?: string; title: string; subtitle?: string }>
+  = ({ eyebrow, title, subtitle }) => (
+  <div className="text-center max-w-2xl mx-auto mb-10">
+    {eyebrow && <div className="text-sm font-semibold tracking-wide text-emerald-700/80">{eyebrow}</div>}
+    <h2 className="text-3xl sm:text-4xl font-bold mt-1 text-zinc-900">{title}</h2>
+    {subtitle && <p className="mt-3 text-zinc-600 leading-relaxed">{subtitle}</p>}
+  </div>
+);
+
+export default function JadeLanding() {
+  return (
+    <div className="min-h-screen text-zinc-900" style={{
+      backgroundImage: `radial-gradient(1000px 600px at 70% -10%, ${jade[200]}55, transparent 60%), radial-gradient(800px 500px at -10% 10%, ${jade[100]}, transparent 70%), linear-gradient(180deg, ${jade[50]}, #ffffff)`
+    }}>
+      {/* Nav */}
+      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/50 bg-white/70 border-b border-white/30">
+        <Container className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl flex items-center justify-center shadow-sm" style={{background: `linear-gradient(135deg, ${jade[500]}, ${jade[700]})`}}>
+              <Mail className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-lg font-bold" style={{ color: jade[800] }}>永遠の手紙</span>
+          </div>
+          <nav className="hidden sm:flex items-center gap-6 text-sm text-zinc-700">
+            <a href="#features" className="hover:text-zinc-900">特徴</a>
+            <a href="#how" className="hover:text-zinc-900">仕組み</a>
+            <a href="#faq" className="hover:text-zinc-900">FAQ</a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <CTA href="#send" variant="ghost">手紙を送る</CTA>
+          </div>
+        </Container>
+      </header>
+
+      {/* Hero */}
+      <section className="relative">
+        <Container className="py-14 sm:py-20">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/60 px-3 py-1 text-xs font-semibold text-emerald-800/90 shadow-sm">
+                <Sparkles className="h-3.5 w-3.5" /> 翡翠色の記憶を、未来へ。
+              </div>
+              <h1 className="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight text-zinc-900">
+                いつか必ず届くように、<br />
+                あなたの手紙を<span className="ml-2" style={{ color: jade[600] }}>永久保存</span>
+              </h1>
+              <p className="mt-4 text-lg text-zinc-600 leading-relaxed">
+                Arweave による半永久保存。運営が Irys 手数料を負担するから、
+                だれでも無料で 5MB まで送れます。閲覧は分散UIで、運営が消えても読み継がれます。
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <CTA href="#send" className="">
+                  手紙を送る <ArrowRight className="h-4 w-4" />
+                </CTA>
+                <CTA href="#read" variant="ghost">
+                  手紙を探す・読む
+                </CTA>
+              </div>
+              <p className="mt-3 text-sm text-zinc-500">無料枠: 1通 5MB まで。より大きなサイズは課金で可能。</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.05 }}
+              className="lg:justify-self-end w-full">
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-3xl opacity-60 blur-2xl" style={{background: `radial-gradient(60% 60% at 50% 50%, ${jade[300]}55, transparent)`}} />
+                <div className="relative rounded-3xl border border-white/30 bg-white/70 p-6 shadow-xl backdrop-blur">
+                  <div className="rounded-2xl p-6" style={{
+                    background: `linear-gradient(135deg, ${jade[200]}, ${jade[100]})`
+                  }}>
+                    <div className="text-sm font-semibold text-emerald-900/80">プレビュー</div>
+                    <div className="mt-2 rounded-xl border border-white/40 bg-white p-4">
+                      <div className="flex items-center gap-2 text-sm text-zinc-600"><Mail className="h-4 w-4"/> あなたへ — 2025/09/24</div>
+                      <p className="mt-2 text-zinc-800 leading-relaxed">親愛なるあなたへ。いまは会えないけれど、いつかこの手紙が届くことを願って、ここに想いを残します。</p>
+                      <div className="mt-3 flex items-center gap-3 text-zinc-600">
+                        <ImageIcon className="h-4 w-4"/> 家族写真.jpg
+                        <AudioLines className="h-4 w-4"/> voice.mp3
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Features */}
+      <section id="features">
+        <Container className="py-12 sm:py-16">
+          <SectionTitle title="このサービスの特徴" subtitle="永続性・無料送信・分散閲覧の3本柱。" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card>
+              <div className="flex items-start gap-4">
+                <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{background: jade[100]}}>
+                  <Database className="h-5 w-5" style={{ color: jade[700] }} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-zinc-900">半永久保存</h3>
+                  <p className="mt-1 text-sm text-zinc-600">Arweave に保存。運営が停止しても、世界中のゲートウェイから読み出せます。</p>
+                </div>
+              </div>
+            </Card>
+            <Card>
+              <div className="flex items-start gap-4">
+                <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{background: jade[100]}}>
+                  <ShieldCheck className="h-5 w-5" style={{ color: jade[700] }} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-zinc-900">無料で 5MB まで</h3>
+                  <p className="mt-1 text-sm text-zinc-600">Irys 経由の費用は運営が負担。大きなサイズは課金で対応可能です。</p>
+                </div>
+              </div>
+            </Card>
+            <Card>
+              <div className="flex items-start gap-4">
+                <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{background: jade[100]}}>
+                  <Search className="h-5 w-5" style={{ color: jade[700] }} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-zinc-900">受け取りやすい</h3>
+                  <p className="mt-1 text-sm text-zinc-600">名前と生年月日で検索。秘密の質問に答えると手紙が開封されます。</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </Container>
+      </section>
+
+      {/* How it works */}
+      <section id="how">
+        <Container className="py-12 sm:py-16">
+          <SectionTitle title="仕組み" subtitle="シンプルな4ステップで、想いを未来へ残します。" />
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 list-none counter-reset step">
+            {[
+              { icon: <Mail className="h-5 w-5"/>, title: "手紙を作成", desc: "本文・画像・音声を添えて、5MB まで無料で。" },
+              { icon: <Lock className="h-5 w-5"/>, title: "鍵封筒で保護", desc: "秘密の質問の答えから鍵を導出し、安全に包みます。" },
+              { icon: <Database className="h-5 w-5"/>, title: "Arweaveに保存", desc: "運営が Irys で手数料を負担し、半永久保存。" },
+              { icon: <Search className="h-5 w-5"/>, title: "探して開封", desc: "名前+生年月日で検索、質問に答えて開封します。" },
+            ].map((s, i) => (
+              <li key={i} className="relative">
+                <Card>
+                  <div className="flex items-start gap-4">
+                    <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{background: jade[100]}}>
+                      <div className="text-emerald-800">{s.icon}</div>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-zinc-900">{i+1}. {s.title}</h3>
+                      <p className="mt-1 text-sm text-zinc-600">{s.desc}</p>
+                    </div>
+                  </div>
+                </Card>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      {/* Send / Read anchors */}
+      <section id="send">
+        <Container className="py-10">
+          <div className="rounded-3xl border border-white/30 bg-white/70 p-8 shadow-sm">
+            <h3 className="text-2xl font-bold text-zinc-900">手紙を送る</h3>
+            <p className="mt-2 text-zinc-600">送信フォームへ進みます。Irys 手数料は運営が負担します（5MBまで）。</p>
+            <div className="mt-4">
+              <CTA href="#" aria-label="送信フォームへ">送信フォームへ <ArrowRight className="h-4 w-4"/></CTA>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="read">
+        <Container className="py-6 pb-16">
+          <div className="rounded-3xl border border-white/30 bg-white/70 p-8 shadow-sm">
+            <h3 className="text-2xl font-bold text-zinc-900">手紙を探す・読む</h3>
+            <p className="mt-2 text-zinc-600">受け取り用ビューア（分散UI）を開きます。運営が停止しても使えます。</p>
+            <div className="mt-4">
+              <CTA href="#" variant="ghost" aria-label="閲覧ビューアへ">閲覧ビューアへ</CTA>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="border-t border-white/40 bg-white/60">
+        <Container className="py-12 sm:py-16">
+          <SectionTitle title="よくある質問" />
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card>
+              <h4 className="font-semibold text-zinc-900">本当に永久に読めますか？</h4>
+              <p className="mt-2 text-sm text-zinc-600">はい。Arweave は分散ネットワーク上に保存され、特定の運営に依存しません。複数のゲートウェイから取得可能です。</p>
+            </Card>
+            <Card>
+              <h4 className="font-semibold text-zinc-900">無料で送れるサイズは？</h4>
+              <p className="mt-2 text-sm text-zinc-600">1通 5MB まで。画像や音声は自動で最適化されます。大きいサイズは課金で対応予定です。</p>
+            </Card>
+            <Card>
+              <h4 className="font-semibold text-zinc-900">個人情報は保存されますか？</h4>
+              <p className="mt-2 text-sm text-zinc-600">名前と生年月日は検索用に正規化した値から算出したバケットIDのみをタグに保存します。平文の個人情報は保存しません。</p>
+            </Card>
+            <Card>
+              <h4 className="font-semibold text-zinc-900">運営が停止したら？</h4>
+              <p className="mt-2 text-sm text-zinc-600">受信ビューアは分散UIとして独立配布され、ArweaveのGraphQL経由で直接検索・復号が可能です。</p>
+            </Card>
+          </div>
+        </Container>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/30 bg-white/70">
+        <Container className="py-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-zinc-600">
+            <div className="flex items-center gap-2">
+              <div className="h-6 w-6 rounded-md flex items-center justify-center" style={{background: jade[500]}}>
+                <Mail className="h-3.5 w-3.5 text-white"/>
+              </div>
+              <span>© {new Date().getFullYear()} 永遠の手紙</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <a href="#" className="hover:text-zinc-800">利用規約</a>
+              <a href="#" className="hover:text-zinc-800">プライバシー</a>
+            </div>
+          </div>
+        </Container>
+      </footer>
+    </div>
+  );
+}
+
