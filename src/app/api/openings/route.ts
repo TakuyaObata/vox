@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,65 +12,65 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createServerClient();
-    const { data: letter, error: letterError } = await supabase
-      .from('letters')
-      .select('id, bucket_id')
-      .eq('txid', txid)
-      .single();
+    // const supabase = createServerClient();
+    // const { data: letter, error: letterError } = await supabase
+    //   .from('letters')
+    //   .select('id, bucket_id')
+    //   .eq('txid', txid)
+    //   .single();
 
-    if (letterError || !letter) {
-      return NextResponse.json(
-        { error: 'Letter not found' },
-        { status: 404 }
-      );
-    }
+    // if (letterError || !letter) {
+    //   return NextResponse.json(
+    //     { error: 'Letter not found' },
+    //     { status: 404 }
+    //   );
+    // }
 
-    const { data: existingOpening } = await supabase
-      .from('openings')
-      .select('id')
-      .eq('txid', txid)
-      .eq('opener_id', openerId)
-      .single();
+    // const { data: existingOpening } = await supabase
+    //   .from('openings')
+    //   .select('id')
+    //   .eq('txid', txid)
+    //   .eq('opener_id', openerId)
+    //   .single();
 
-    if (existingOpening) {
-      return NextResponse.json(
-        { error: 'Letter already opened by this user' },
-        { status: 409 }
-      );
-    }
+    // if (existingOpening) {
+    //   return NextResponse.json(
+    //     { error: 'Letter already opened by this user' },
+    //     { status: 409 }
+    //   );
+    // }
 
-    const { data: opening, error: openingError } = await supabase
-      .from('openings')
-      .insert({
-        txid,
-        opener_id: openerId
-      })
-      .select()
-      .single();
+    // const { data: opening, error: openingError } = await supabase
+    //   .from('openings')
+    //   .insert({
+    //     txid,
+    //     opener_id: openerId
+    //   })
+    //   .select()
+    //   .single();
 
-    if (openingError) {
-      console.error('Database error:', openingError);
-      return NextResponse.json(
-        { error: 'Failed to record opening' },
-        { status: 500 }
-      );
-    }
+    // if (openingError) {
+    //   console.error('Database error:', openingError);
+    //   return NextResponse.json(
+    //     { error: 'Failed to record opening' },
+    //     { status: 500 }
+    //   );
+    // }
 
-    await supabase
-      .from('telemetry')
-      .insert({
-        event: 'decrypt',
-        txid,
-        bucket_id: letter.bucket_id,
-        meta: {
-          opener_id: openerId
-        }
-      });
+    // await supabase
+    //   .from('telemetry')
+    //   .insert({
+    //     event: 'decrypt',
+    //     txid,
+    //     bucket_id: letter.bucket_id,
+    //     meta: {
+    //       opener_id: openerId
+    //     }
+    //   });
 
     return NextResponse.json({
       success: true,
-      openingId: opening.id,
+      openingId: 'mock_opening_id',
       message: 'Opening recorded successfully'
     });
 

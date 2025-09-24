@@ -1,14 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const supabase = createServerClient();
 
     const { data: letterStats, error: letterError } = await supabase
       .from('letters')
       .select('id, sender_id, cost_fiat')
-      .not('sender_id', 'is', null);
+      .not('sender_id', 'is', null) as { 
+        data: Array<{ id: string; sender_id: string; cost_fiat: number | null }> | null; 
+        error: unknown 
+      };
 
     if (letterError) {
       console.error('Letter stats error:', letterError);
@@ -20,7 +23,10 @@ export async function GET(request: NextRequest) {
 
     const { data: openingStats, error: openingError } = await supabase
       .from('openings')
-      .select('id, opener_id');
+      .select('id, opener_id') as { 
+        data: Array<{ id: string; opener_id: string }> | null; 
+        error: unknown 
+      };
 
     if (openingError) {
       console.error('Opening stats error:', openingError);
@@ -60,15 +66,14 @@ export async function GET(request: NextRequest) {
       arweave: gatewayStatus
     };
 
-    await supabase
-      .from('telemetry')
-      .insert({
-        event: 'view',
-        meta: {
-          endpoint: 'stats/public',
-          stats_snapshot: stats
-        }
-      });
+    // await supabase
+    //   .from('telemetry')
+    //   .insert({
+    //     event: 'view',
+    //     meta: {
+    //       endpoint: 'stats/public',
+    //       stats_snapshot: stats
+    //     }
 
     return NextResponse.json(stats);
 

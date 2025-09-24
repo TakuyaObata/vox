@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { BarChart3, Users, Mail, DollarSign, Globe, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const jade = {
   50: "#f0fdf4",
@@ -129,9 +130,9 @@ export default function StatsPage() {
             <span className="text-xl font-bold text-gray-900">永遠の手紙</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/" className="text-gray-600 hover:text-gray-900">ホーム</a>
-            <a href="/send" className="text-gray-600 hover:text-gray-900">手紙を送る</a>
-            <a href="/read" className="text-gray-600 hover:text-gray-900">手紙を読む</a>
+            <Link href="/" className="text-gray-600 hover:text-gray-900">ホーム</Link>
+            <Link href="/send" className="text-gray-600 hover:text-gray-900">手紙を送る</Link>
+            <Link href="/read" className="text-gray-600 hover:text-gray-900">手紙を読む</Link>
           </nav>
         </Container>
       </header>

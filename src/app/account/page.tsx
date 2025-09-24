@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { User, Mail, Calendar, Settings, LogOut, Shield } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const jade = {
   50: "#f0fdf4",
@@ -139,13 +140,13 @@ export default function AccountPage() {
               <Shield className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <h1 className="text-2xl font-bold text-gray-900 mb-4">認証が必要です</h1>
               <p className="text-gray-600 mb-6">アカウントページにアクセスするにはログインが必要です。</p>
-              <a
+              <Link
                 href="/"
                 className="inline-flex items-center gap-2 px-6 py-3 text-white font-semibold rounded-2xl transition-all duration-200"
                 style={{background: `linear-gradient(135deg, ${jade[500]} 0%, ${jade[600]} 100%)`}}
               >
                 ホームに戻る
-              </a>
+              </Link>
             </div>
           </Container>
         </main>
@@ -165,10 +166,10 @@ export default function AccountPage() {
             <span className="text-xl font-bold text-gray-900">永遠の手紙</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/" className="text-gray-600 hover:text-gray-900">ホーム</a>
-            <a href="/send" className="text-gray-600 hover:text-gray-900">手紙を送る</a>
-            <a href="/read" className="text-gray-600 hover:text-gray-900">手紙を読む</a>
-            <a href="/stats" className="text-gray-600 hover:text-gray-900">統計</a>
+            <Link href="/" className="text-gray-600 hover:text-gray-900">ホーム</Link>
+            <Link href="/send" className="text-gray-600 hover:text-gray-900">手紙を送る</Link>
+            <Link href="/read" className="text-gray-600 hover:text-gray-900">手紙を読む</Link>
+            <Link href="/stats" className="text-gray-600 hover:text-gray-900">統計</Link>
           </nav>
         </Container>
       </header>

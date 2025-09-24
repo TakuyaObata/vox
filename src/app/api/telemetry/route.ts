@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,31 +20,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createServerClient();
     
-    const { data, error } = await supabase
-      .from('telemetry')
-      .insert({
-        event,
-        txid: txid || null,
-        bucket_id: bucketId || null,
-        value: value || null,
-        meta: meta || null
-      })
-      .select()
-      .single();
+    // const { data, error } = await supabase
+    //   .from('telemetry')
+    //   .insert({
+    //     event,
+    //     txid: txid || null,
+    //     bucket_id: bucketId || null,
+    //     value: value || null,
+    //     meta: meta || null
+    //   })
+    //   .select()
+    //   .single();
 
-    if (error) {
-      console.error('Telemetry error:', error);
-      return NextResponse.json(
-        { error: 'Failed to record telemetry' },
-        { status: 500 }
-      );
-    }
+    // if (error) {
+    //   console.error('Telemetry error:', error);
+    //   return NextResponse.json(
+    //     { error: 'Failed to record telemetry' },
+    //     { status: 500 }
+    //   );
+    // }
 
     return NextResponse.json({
       success: true,
-      id: data.id
+      id: 'mock_telemetry_id'
     });
 
   } catch (error) {

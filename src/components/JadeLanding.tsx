@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Mail, Shield, Globe, Clock, Users, ArrowRight, ChevronDown } from "lucide-react";
+import { Mail, Shield, Globe, Clock, Users, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 const jade = {
@@ -22,22 +22,33 @@ const Container: React.FC<{ className?: string; children: React.ReactNode }> = (
   <div className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>
 );
 
-const CTA: React.FC<{ as?: "a" | "button"; href?: string; variant?: "primary" | "ghost"; children: React.ReactNode } & React.ComponentPropsWithoutRef<any>> = ({ as = "a", href = "#", variant = "primary", children, ...rest }) => {
+const CTA: React.FC<{ as?: "a" | "button"; href?: string; variant?: "primary" | "ghost"; children: React.ReactNode; [key: string]: unknown }> = ({ as = "a", href = "#", variant = "primary", children, ...rest }) => {
   const base = "inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-base font-semibold transition-transform active:scale-[.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
   const styles = variant === "primary"
     ? `text-white shadow-md shadow-[${jade[600]}]/30`
     : `text-[${jade[800]}] bg-white/60 backdrop-blur border border-white/50 hover:bg-white`;
   
-  const Component = as;
+  if (as === "a") {
+    return (
+      <a 
+        href={href}
+        className={`${base} ${styles}`}
+        style={variant === "primary" ? { background: `linear-gradient(135deg, ${jade[500]} 0%, ${jade[600]} 100%)` } : {}}
+        {...rest}
+      >
+        {children}
+      </a>
+    );
+  }
+  
   return (
-    <Component 
-      href={as === "a" ? href : undefined}
+    <button 
       className={`${base} ${styles}`}
       style={variant === "primary" ? { background: `linear-gradient(135deg, ${jade[500]} 0%, ${jade[600]} 100%)` } : {}}
       {...rest}
     >
       {children}
-    </Component>
+    </button>
   );
 };
 

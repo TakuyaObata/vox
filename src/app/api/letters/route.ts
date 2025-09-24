@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,7 +26,7 @@ export async function POST(request: NextRequest) {
     const mockBucketId = `bucket_${recipientName}_${recipientDob}`.replace(/\s+/g, '').toLowerCase();
     
     const contentSize = new TextEncoder().encode(content).length;
-    const attachmentSize = attachments.reduce((sum: number, att: any) => sum + (att.size || 0), 0);
+    const attachmentSize = attachments.reduce((sum: number, att: { size?: number }) => sum + (att.size || 0), 0);
     const totalBytes = contentSize + attachmentSize;
 
     const costAr = totalBytes * 0.000001; // Mock AR cost
@@ -44,43 +43,43 @@ export async function POST(request: NextRequest) {
 
 
 
-    const supabase = createServerClient();
-    const { data: letter, error: dbError } = await supabase
-      .from('letters')
-      .insert({
-        txid: mockTxid,
-        bucket_id: mockBucketId,
-        sender_id: senderId,
-        bytes: totalBytes,
-        cost_ar: costAr,
-        cost_fiat: costFiat,
-        mirror_opt_in: mirrorOptIn,
-        mirror_id: mirrorOptIn ? `mirror_${mockTxid}` : null
-      })
-      .select()
-      .single();
+    // const supabase = createServerClient();
+    // const { error: dbError } = await supabase
+    //   .from('letters')
+    //   .insert({
+    //     txid: mockTxid,
+    //     bucket_id: mockBucketId,
+    //     sender_id: senderId,
+    //     bytes: totalBytes,
+    //     cost_ar: costAr,
+    //     cost_fiat: costFiat,
+    //     mirror_opt_in: mirrorOptIn,
+    //     mirror_id: mirrorOptIn ? `mirror_${mockTxid}` : null
+    //   })
+    //   .select()
+    //   .single();
 
-    if (dbError) {
-      console.error('Database error:', dbError);
-      return NextResponse.json(
-        { error: 'Failed to save letter record' },
-        { status: 500 }
-      );
-    }
+    // if (dbError) {
+    //   console.error('Database error:', dbError);
+    //   return NextResponse.json(
+    //     { error: 'Failed to save letter record' },
+    //     { status: 500 }
+    //   );
+    // }
 
-    await supabase
-      .from('telemetry')
-      .insert({
-        event: 'sent',
-        txid: mockTxid,
-        bucket_id: mockBucketId,
-        value: totalBytes,
-        meta: {
-          cost_ar: costAr,
-          cost_fiat: costFiat,
-          attachments_count: attachments.length
-        }
-      });
+    // await supabase
+    //   .from('telemetry')
+    //   .insert({
+    //     event: 'sent',
+    //     txid: mockTxid,
+    //     bucket_id: mockBucketId,
+    //     value: totalBytes,
+    //     meta: {
+    //       cost_ar: costAr,
+    //       cost_fiat: costFiat,
+    //       attachments_count: attachments.length
+    //     }
+    //   });
 
     return NextResponse.json({
       success: true,

@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Upload, AlertCircle, CheckCircle } from "lucide-react";
+import { Mail, Upload, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const jade = {
   50: "#f0fdf4",
@@ -35,7 +36,6 @@ export default function SendPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
-  const [estimatedCost, setEstimatedCost] = useState({ ar: 0, fiat: 0 });
 
   const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -111,9 +111,9 @@ export default function SendPage() {
             <span className="text-xl font-bold text-gray-900">永遠の手紙</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/" className="text-gray-600 hover:text-gray-900">ホーム</a>
-            <a href="/read" className="text-gray-600 hover:text-gray-900">手紙を読む</a>
-            <a href="/stats" className="text-gray-600 hover:text-gray-900">統計</a>
+            <Link href="/" className="text-gray-600 hover:text-gray-900">ホーム</Link>
+            <Link href="/read" className="text-gray-600 hover:text-gray-900">手紙を読む</Link>
+            <Link href="/stats" className="text-gray-600 hover:text-gray-900">統計</Link>
           </nav>
         </Container>
       </header>

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Search, Lock, Eye, UserPlus, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 // import { normalizeIdentity, normalizeAnswer, deriveKAns, aeadDecrypt, hexToUint8Array } from "@/lib/crypto";
 
 const jade = {
@@ -54,7 +55,7 @@ export default function ReadPage() {
     setCandidates([]);
 
     try {
-      const bucketId = `bucket_${searchData.recipientName}_${searchData.recipientDob}`.replace(/\s+/g, '').toLowerCase();
+      // const bucketId = `bucket_${searchData.recipientName}_${searchData.recipientDob}`.replace(/\s+/g, '').toLowerCase();
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
@@ -126,9 +127,9 @@ export default function ReadPage() {
             <span className="text-xl font-bold text-gray-900">永遠の手紙</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/" className="text-gray-600 hover:text-gray-900">ホーム</a>
-            <a href="/send" className="text-gray-600 hover:text-gray-900">手紙を送る</a>
-            <a href="/stats" className="text-gray-600 hover:text-gray-900">統計</a>
+            <Link href="/" className="text-gray-600 hover:text-gray-900">ホーム</Link>
+            <Link href="/send" className="text-gray-600 hover:text-gray-900">手紙を送る</Link>
+            <Link href="/stats" className="text-gray-600 hover:text-gray-900">統計</Link>
           </nav>
         </Container>
       </header>

@@ -3,10 +3,10 @@ import { createServerClient } from '@/lib/supabase';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { bucketId: string } }
+  { params }: { params: Promise<{ bucketId: string }> }
 ) {
+  const { bucketId } = await params;
   try {
-    const { bucketId } = params;
 
     if (!bucketId) {
       return NextResponse.json(
@@ -20,7 +20,10 @@ export async function GET(
       .from('letters')
       .select('txid, created_at')
       .eq('bucket_id', bucketId)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false }) as { 
+        data: Array<{ txid: string; created_at: string }> | null; 
+        error: unknown 
+      };
 
     if (error) {
       console.error('Database error:', error);
@@ -48,16 +51,16 @@ export async function GET(
 
     const validCandidates = candidates.filter(c => c !== null);
 
-    await supabase
-      .from('telemetry')
-      .insert({
-        event: 'found',
-        bucket_id: bucketId,
-        value: validCandidates.length,
-        meta: {
-          total_letters: letters?.length || 0
-        }
-      });
+    // await supabase
+    //   .from('telemetry')
+    //   .insert({
+    //     event: 'found',
+    //     bucket_id: bucketId,
+    //     value: validCandidates.length,
+    //     meta: {
+    //       total_letters: letters?.length || 0
+    //     }
+    //   });
 
     return NextResponse.json({
       bucketId,

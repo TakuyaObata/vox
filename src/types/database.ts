@@ -83,7 +83,7 @@ export interface Database {
           txid: string | null
           bucket_id: string | null
           value: number | null
-          meta: any | null
+          meta: Record<string, unknown> | null
           created_at: string
         }
         Insert: {
@@ -92,7 +92,7 @@ export interface Database {
           txid?: string | null
           bucket_id?: string | null
           value?: number | null
-          meta?: any | null
+          meta?: Record<string, unknown> | null
           created_at?: string
         }
         Update: {
@@ -101,7 +101,7 @@ export interface Database {
           txid?: string | null
           bucket_id?: string | null
           value?: number | null
-          meta?: any | null
+          meta?: Record<string, unknown> | null
           created_at?: string
         }
       }
@@ -128,5 +128,5 @@ export interface TelemetryEvent {
   txid?: string
   bucket_id?: string
   value?: number
-  meta?: Record<string, any>
+  meta?: Record<string, unknown>
 }

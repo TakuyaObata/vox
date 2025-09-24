@@ -34,16 +34,16 @@ export async function aeadEncrypt(
   const iv = crypto.getRandomValues(new Uint8Array(12))
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
-    key,
+    new Uint8Array(key),
     { name: 'AES-GCM' },
     false,
     ['encrypt']
   )
   
   const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv: iv, tagLength: 128 },
+    { name: 'AES-GCM', iv: new Uint8Array(iv), tagLength: 128 },
     cryptoKey,
-    data
+    new Uint8Array(data)
   )
   
   const encryptedArray = new Uint8Array(encrypted)
@@ -61,7 +61,7 @@ export async function aeadDecrypt(
 ): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
-    key,
+    new Uint8Array(key),
     { name: 'AES-GCM' },
     false,
     ['decrypt']
@@ -72,9 +72,9 @@ export async function aeadDecrypt(
   combined.set(tag, encrypted.length)
   
   const decrypted = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv: iv, tagLength: 128 },
+    { name: 'AES-GCM', iv: new Uint8Array(iv), tagLength: 128 },
     cryptoKey,
-    combined
+    new Uint8Array(combined)
   )
   
   return new Uint8Array(decrypted)
@@ -95,7 +95,19 @@ export async function buildLetterPayload(
   
   const { encrypted: encryptedKey } = await aeadEncrypt(kMsg, kAns)
   
-  const letterData: any = {
+  const letterData: {
+    question: string;
+    kdfParams: {
+      salt: string;
+      iterations: number;
+      memory: number;
+      parallelism: number;
+    };
+    encryptedData: string;
+    encryptedKey: string;
+    iv: string;
+    tag: string;
+  } = {
     question,
     kdfParams: {
       salt: Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join(''),
